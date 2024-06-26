@@ -1,4 +1,21 @@
 import streamlit as st
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
+# Dummy model for demonstration
+# In practice, you would load a pre-trained model, for example using joblib
+model = LogisticRegression()
+
+# Dummy data to train the model
+# In practice, use your real training data
+X_train = np.array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0.5],
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1.0],
+                    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1.5],
+                    [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 2.0]])
+
+y_train = np.array([0, 1, 0, 1])  # Dummy target values
+
+model.fit(X_train, y_train)
 
 # Set up the page layout and title
 st.set_page_config(layout="wide")
@@ -24,24 +41,32 @@ with st.form("prediction_form"):
 
 # If the form is submitted, make the prediction
 if submitted:
-    # Prepare the data for prediction
-    data = {
-        "age": age,
-        "gender": gender,
-        "total_bilirubin": total_bilirubin,
-        "direct_bilirubin": direct_bilirubin,
-        "alkaline_phosphotase": alkaline_phosphotase,
-        "alamine_aminotransferase": alamine_aminotransferase,
-        "aspartate_aminotransferase": aspartate_aminotransferase,
-        "total_proteins": total_proteins,
-        "albumin": albumin,
-        "albumin_and_globulin_ratio": albumin_and_globulin_ratio
-    }
-    
-    # Parse the response
-    result = ()
-    prediction = result.get("prediction", 0)
-    prediction_text = "Positive for Liver Disease" if prediction == 1 else "Negative for Liver Disease"
+    try:
+        # Convert inputs to the right format
+        inputs = np.array([
+            float(age),
+            1 if gender == "Male" else 0,
+            float(total_bilirubin),
+            float(direct_bilirubin),
+            float(alkaline_phosphotase),
+            float(alamine_aminotransferase),
+            float(aspartate_aminotransferase),
+            float(total_proteins),
+            float(albumin),
+            float(albumin_and_globulin_ratio)
+        ]).reshape(1, -1)
+        
+        # Log inputs for debugging
+        st.write("Inputs:", inputs)
+        
+        # Make prediction
+        prediction = model.predict(inputs)[0]
+        prediction_text = "Positive for Liver Disease" if prediction == 1 else "Negative for Liver Disease"
+        
+    except ValueError as e:
+        prediction_text = f"Invalid input: {e}"
+    except Exception as e:
+        prediction_text = f"An error occurred: {e}"
     
     # Display the prediction result
     st.header("Prediction Result")
