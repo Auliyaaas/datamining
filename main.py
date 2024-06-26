@@ -5,9 +5,13 @@ st.title("Liver Disease Prediction App")
 
 # Mock prediction function
 def mock_predict(inputs):
-    # Simple logic to mock the prediction
-    # For demonstration purposes only, replace with actual model logic
-    if inputs[0][2] > 1.2:  # Arbitrary condition based on Total Bilirubin
+    # Basic logic for demonstration purposes
+    # This is a simple example; replace with actual prediction logic
+    age, gender, total_bilirubin, direct_bilirubin, alkaline_phosphotase, alamine_aminotransferase, \
+    aspartate_aminotransferase, total_proteins, albumin, albumin_and_globulin_ratio = inputs[0]
+    
+    # Simplified condition to mock prediction
+    if total_bilirubin > 1.2 or direct_bilirubin > 0.5 or alkaline_phosphotase > 150:
         return [1]  # Positive for Liver Disease
     else:
         return [0]  # Negative for Liver Disease
