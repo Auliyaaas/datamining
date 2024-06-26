@@ -1,25 +1,16 @@
 import streamlit as st
 import numpy as np
-from sklearn.linear_model import LogisticRegression
 
-# Dummy model for demonstration
-# In practice, you would load a pre-trained model, for example using joblib
-model = LogisticRegression()
-
-# Dummy data to train the model
-# In practice, use your real training data
-X_train = np.array([[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0.5],
-                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1.0],
-                    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1.5],
-                    [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 2.0]])
-
-y_train = np.array([0, 1, 0, 1])  # Dummy target values
-
-model.fit(X_train, y_train)
-
-# Set up the page layout and title
-st.set_page_config(layout="wide")
 st.title("Liver Disease Prediction App")
+
+# Mock prediction function
+def mock_predict(inputs):
+    # Simple logic to mock the prediction
+    # For demonstration purposes only, replace with actual model logic
+    if inputs[0][2] > 1.2:  # Arbitrary condition based on Total Bilirubin
+        return [1]  # Positive for Liver Disease
+    else:
+        return [0]  # Negative for Liver Disease
 
 # Create a form for user input
 with st.form("prediction_form"):
@@ -59,14 +50,10 @@ if submitted:
         # Log inputs for debugging
         st.write("Inputs:", inputs)
         
-        # Make prediction
-        prediction = model.predict(inputs)[0]
+        # Make prediction using the mock function
+        prediction = mock_predict(inputs)[0]
         prediction_text = "Positive for Liver Disease" if prediction == 1 else "Negative for Liver Disease"
         
-    except ValueError as e:
-        prediction_text = f"Invalid input: {e}"
-    except Exception as e:
-        prediction_text = f"An error occurred: {e}"
     
     # Display the prediction result
     st.header("Prediction Result")
