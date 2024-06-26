@@ -54,6 +54,10 @@ if submitted:
         prediction = mock_predict(inputs)[0]
         prediction_text = "Positive for Liver Disease" if prediction == 1 else "Negative for Liver Disease"
         
+    except ValueError as e:
+        prediction_text = f"Invalid input: {e}"
+    except Exception as e:
+        prediction_text = f"An error occurred: {e}"
     
     # Display the prediction result
     st.header("Prediction Result")
